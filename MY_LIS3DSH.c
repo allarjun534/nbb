@@ -1,36 +1,3 @@
-
-Conversation opened. 1 read message. 
-
-Skip to content
-Using RV College of Engineering, Bangalore, India. Mail with screen readers
-vena 
-
-2 of 42
-Accelerometer SPI supporting files
-Inbox
-
-Veenadivya K <veenadivyak@rvce.edu.in>
-Attachments
-Mon, Aug 19, 3:41 PM
-to Electronics
-
-
-PFA
---
-Regards.,
-
-Veena 
-
-Dr. Veena Divya .K
-Assistant Professor.
-Department of Electronics and Instrumentation Engineering,
-RV College of Engineering,
-Bengaluru - 560059.
-
-Caption: "Bloom where you are planted".
- 2 Attachments
-  •  Scanned by Gmail
-venue. Press tab to insert.
 /*
 Library:					Accelerometer - LIS3DSH
 Written by:				Mohamed Yaqoob (MYaqoobEmbedded YouTube Channel)
@@ -234,6 +201,3 @@ void LIS3DSH_Z_calibrate(float z_min, float z_max)
 	__Z_Bias = (z_max+z_min)/2.0f;
 	__Z_Scale = (2*1000)/(z_max - z_min);
 }
-
-MY_LIS3DSH.c
-Displaying MY_LIS3DSH.c.
