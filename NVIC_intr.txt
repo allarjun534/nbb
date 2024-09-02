@@ -1,0 +1,51 @@
+
+/* NVIC interrupt to toggle the red light when an event occurs */
+
+#include "stm32f4xx.h"
+
+void delayMs(int n);
+void EXTI0_IRQHandler(void);  /* Forward declaration to prevent missing prototype warning */
+
+int main(void)
+{
+    RCC->AHB1ENR |= 9U;	/* enable Clock to GPIOA & GPIOD */
+    RCC->APB2ENR |= (1U << 14);	/* enable Clock to System Configuration Controller */
+
+    GPIOD->MODER |= 0x11000000U;	/* set pin 12 & 14 to output mode (Green & Red LEDs) */
+    GPIOA->MODER &= ~(0x00000003U);	/* clear pin mode to input mode */
+
+    SYSCFG->EXTICR[0] &= ~(0xFU << 0);	/* enable EXTI0 for PA0 */
+    EXTI->IMR |= (1U << 0);	/* Interrupt is not Masked on Line0 */
+    EXTI->RTSR |= (1U << 0);	/* Rising Edge trigger enabled */
+    EXTI->FTSR &= ~(1U << 0);	/* Falling Edge trigger disabled */
+    
+    NVIC->ISER[0] |= (1U << 6);  /* Enable EXTI0 interrupt in NVIC */
+
+    while(1)
+    {
+        GPIOD->BSRR = 0x1000U; /* turn ON green LED */
+        delayMs(300);
+        GPIOD->BSRR = 0x10000000U;  /* turn OFF green LED */
+        delayMs(300);
+    }
+}
+
+void EXTI0_IRQHandler(void)
+{
+    int i;
+    for (i = 0; i < 5; i++)
+    {
+        GPIOD->BSRR = 0x4000U;  /* turn ON Red LED */
+        delayMs(300);
+        GPIOD->BSRR = 0x40000000U;  /* turn OFF Red LED */
+        delayMs(300);
+    }
+    EXTI->PR = (1U << 0);  /* Correctly clear the pending interrupt flag */
+}
+
+void delayMs(int n)
+{
+    int i;
+    for (; n > 0; n--)
+        for (i = 0; i < 3195; i++);
+}
